@@ -4,14 +4,12 @@ import {createSelector} from 'reselect';
 import {connect} from "react-redux";
 import {setNewsList, setSource} from "../actions";
 import {bindActionCreators} from "redux";
-import * as axios from "axios/index";
+import {getNewsFromSource} from "../service/httpFetch";
 
 class SourceSelectBox extends Component {
 
     // apiKey = "fcad1af9a4064741b94070a34565fe19";
     // catBasedSources = "https://newsapi.org/v2/sources?apiKey=" + this.apiKey + "&category=";
-    apiKey = "fcad1af9a4064741b94070a34565fe19";
-    newsUrl = "https://newsapi.org/v2/top-headlines?apiKey=" + this.apiKey + "&sources=";
 
 
     constructor(props) {
@@ -27,13 +25,14 @@ class SourceSelectBox extends Component {
 
     fetchNews(selectedSource) {
         if (selectedSource !== null) {
-            axios.get(this.newsUrl + selectedSource).then(res => {
-                if (res.status === 200) {
-                    this.props.setNewsList(res.data.articles);
-                }
-            }, error => {
+            getNewsFromSource(selectedSource)
+                .then(res => {
+                    if (res.status === 200) {
+                        this.props.setNewsList(res.data.articles);
+                    }
+                }, error => {
 
-            });
+                });
         }
     }
 

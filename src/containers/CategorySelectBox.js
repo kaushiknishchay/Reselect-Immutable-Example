@@ -3,15 +3,12 @@ import SelectBox from "../components/SelectBox";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {setApiData, setCategoryAction, setCategoryList} from "../actions";
-import axios from "axios";
 import Spinner from 'react-spinkit';
 import {fromJS} from "immutable";
 import {createSelector} from "reselect";
+import {getSources} from "../service/httpFetch";
 
 class CategorySelect extends PureComponent {
-
-    apiKey = "fcad1af9a4064741b94070a34565fe19";
-    sourcesUrl = "https://newsapi.org/v2/sources?apiKey=" + this.apiKey;
 
     constructor(props) {
         super(props);
@@ -20,17 +17,12 @@ class CategorySelect extends PureComponent {
 
 
     componentDidMount() {
-        axios.get(this.sourcesUrl).then(res => {
-
+        getSources().then(res => {
             if (res.status === 200) {
-
                 let sources = res.data.sources;
                 const uniqueCat = fromJS([...new Set(sources.map(item => item.category))]);
-
-                // setTimeout(()=>{
                 this.props.setCatList(uniqueCat);
                 this.props.setApiData(sources);
-                // },2000);
             }
         }, error => {
             console.log(error);
@@ -71,8 +63,6 @@ function mapDispatchToProps(dispatch) {
         setApiData: setApiData,
     }, dispatch);
 }
-
-// why the component is re-rendered when a category is selected ?
 
 let categories = (state) => state.getIn(['newsApp', 'categories']);
 
