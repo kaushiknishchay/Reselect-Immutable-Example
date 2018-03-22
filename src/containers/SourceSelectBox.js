@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import SelectBox from "../components/SelectBox";
 import {createSelector} from 'reselect';
 import {connect} from "react-redux";
-import axios from "axios";
 
 class SourceSelectBox extends Component {
 
@@ -23,7 +22,6 @@ class SourceSelectBox extends Component {
     render() {
 
         let sourceList = this.props.sourceList;
-        console.log(sourceList);
         return (
             <div>
                 {sourceList &&
@@ -39,32 +37,20 @@ class SourceSelectBox extends Component {
         );
     }
 }
+//
+const getCategory = (state) => state.getIn(['newsApp','selectedCategory']);
+const getSourcesList = (state) => state.getIn(['newsApp','apiData']);
 
-const getCategory = (state) => state.get('selectedCategory');
-const getSourcesList = (state) => state.get('apiData');
-
-const getSourceFromCategory = () => (state, props) => {
-    console.log(state, props)
-    createSelector(
-        [getCategory, getSourcesList], (cat, data) => {
-            console.log(cat, data)
-            // return data.filter((item)=>{
-            //     return cat === item.category;
-            // });
-        }
-    )
-};
-
-
-const mapStateToProps = () => {
-    const getSourceList = getSourceFromCategory();
-    return (state, props) => {
-        return {
-            sourceList: getSourceList(state, props),
-            selected: state.get('newsApp').get('selectedCategory')
-        }
+const getSourceFromCategory = createSelector(getCategory, getSourcesList, (cat, data) => {
+        data = data.filter((item) => cat === item.category);
+        return data.map((item)=> item.id);
     }
+)
 
-};
+function mapStateToProps(state) {
+    return {
+        sourceList: getSourceFromCategory(state),
+    }
+}
 
 export default connect(mapStateToProps)(SourceSelectBox);

@@ -28,7 +28,10 @@ class SelectBox extends Component {
 
 SelectBox.propTypes = {
     name: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.oneOfType([
+        PropTypes.array.isRequired,
+        PropTypes.object.isRequired
+    ]),
 };
 
 export default SelectBox;
