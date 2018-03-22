@@ -21,7 +21,10 @@ class NewsList extends Component {
 }
 
 NewsList.propTypes = {
-    newsData: PropTypes.array.isRequired
+    newsData: PropTypes.oneOfType([
+        PropTypes.array.isRequired,
+        PropTypes.object.isRequired
+    ]),
 };
 
 export default NewsList;

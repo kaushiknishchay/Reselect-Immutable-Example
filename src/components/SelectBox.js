@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 
 class SelectBox extends Component {
     render() {
+        let someStyle = {
+            margin: 10,
+            padding: 10,
+        };
+
         return (
-            <React.Fragment>
+            <div style={someStyle}>
                 <label htmlFor={this.props.name}>{this.props.name}</label>
                 <br/>
                 <select
@@ -21,7 +26,7 @@ class SelectBox extends Component {
                     }
                 </select>
                 <br/>
-            </React.Fragment>
+            </div>
         );
     }
 }

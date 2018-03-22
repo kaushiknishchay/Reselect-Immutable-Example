@@ -3,28 +3,29 @@ import './App.css';
 import CategorySelect from './containers/CategorySelectBox';
 import SourceSelectBox from "./containers/SourceSelectBox";
 import {connect} from "react-redux";
+import NewsList from "./containers/NewsList";
 
 
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // console.log(nextProps)
-        return nextProps.selectedCategory !== this.props.selectedCategory
-    }
+    count = 0;
+    //
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return nextProps.selectedCategory !== this.props.selectedCategory
+    // }
 
 
     render() {
+        this.count += 1;
+        console.log('App Rendered count : ' + this.count);
         return (
             <React.Fragment>
                 <CategorySelect/>
-                {
-                    this.props.selectedCategory &&
-                    <SourceSelectBox/>
-                }
+
+                <SourceSelectBox/>
+
+                <NewsList/>
             </React.Fragment>
         );
     }
@@ -32,7 +33,7 @@ class App extends Component {
 
 const mapState = (state) => {
     return {
-        selectedCategory: state.getIn(['newsApp', 'selectedCategory'])
+        // selectedCategory: state.getIn(['newsApp', 'selectedCategory'])
     }
 };
 export default connect(mapState)(App);

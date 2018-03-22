@@ -1,3 +1,12 @@
 body {
     padding: 40px;
 }
+
+*{
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+li:nth-child(odd){
+    background: #e0e0e0;
+}

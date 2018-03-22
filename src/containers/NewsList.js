@@ -4,30 +4,36 @@ import {connect} from "react-redux";
 
 class NewsList extends Component {
 
-    componentWillMount(){
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            newsData: []
+        }
     }
+
 
     render() {
         return (
-            <React.Fragment>
-                <NewsListComponent newsData={}/>
-            </React.Fragment>
+            <div>
+                {
+                    this.renderNews()
+                }
+            </div>
         );
+    }
+
+    renderNews() {
+        if (this.props.selectedSource !== null) {
+            return (<NewsListComponent newsData={this.props.newsData}/>);
+        }
     }
 }
 
-
-// function mapDispatchToProps(dispatch) {
-//     return bindActionCreators({
-//         get
-//     })
-// }
-
-function makeMapStateToProps() {
-    const getNewsDataState = makeNewsData()
-    return (state, props)=>{
-
+function makeMapStateToProps(state) {
+    return {
+        selectedSource: state.getIn(['newsApp', 'selectedSource']),
+        newsData: state.getIn(['newsApp', 'newsList']),
     }
 }
 
