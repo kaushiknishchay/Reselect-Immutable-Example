@@ -20,8 +20,7 @@ class CategorySelect extends PureComponent {
         getSources().then(res => {
             if (res.status === 200) {
                 let sources = res.data.sources;
-                const uniqueCat = fromJS([...new Set(sources.map(item => item.category))]);
-                this.props.setCatList(uniqueCat);
+                // this.props.setCatList(uniqueCat);
                 this.props.setApiData(sources);
             }
         }, error => {
@@ -59,14 +58,16 @@ class CategorySelect extends PureComponent {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setCategory: setCategoryAction,
-        setCatList: setCategoryList,
         setApiData: setApiData,
     }, dispatch);
 }
 
-let categories = (state) => state.getIn(['newsApp', 'categories']);
+let apiData = (state) => state.getIn(['newsApp', 'apiData']);
 
-const getCategoriesData = createSelector(categories, (cats) => cats);
+const getCategoriesData = createSelector(apiData, (apiData) => {
+    const uniqueCat = fromJS([...new Set(apiData.map(item => item.category))]);
+    return uniqueCat;
+});
 
 function mapStateToProps(state) {
     return {
